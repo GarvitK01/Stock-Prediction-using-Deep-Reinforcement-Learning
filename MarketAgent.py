@@ -1,10 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import sklearn
 import keras
 import tensorflow as tf
 import random
+import datetime
+import time as samay
 
 
 class MarketAgent():
@@ -52,12 +53,18 @@ class MarketAgent():
         for time in range(1, len(data) - 1):
             state = data[time]   # State Vector
             reward = 100 * (state[3] - data[time-1][3])/(data[time-1][3] + 0.00001)
-#             print(f"Current Reward {reward}\n" )
             next_state = time + 1
-            self.state_value[time] += alpha * (reward + gamma * self.state_value[next_state] - self.state_value[time])
-#             print(f"Current State: {state}, Shape: {state.shape}\n")
+            input_state = data[time].reshape(1, 6)
+            prediction = self.model.predict(input_state)
+            prediction = prediction[0]
+            # print(f"\n\n{type(prediction)} {type(self.state_value[time])}\n\n")
+            self.state_value[time] += alpha * (reward + gamma * prediction - self.state_value[time])
             state = state.reshape(-1, self.state_size)
             self.model.fit(state, self.state_value[time], epochs = 3, verbose = 1)
+
+        curr_time = samay.time()
+        curr_time = datetime.datetime.fromtimestamp(curr_time).strftime('%d_%H:%M:%S')
+        self.model.save(f"model_saved_{curr_time}")
             
 
 
