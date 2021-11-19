@@ -11,6 +11,7 @@ warnings.filterwarnings("ignore")
 
 
 data = load_data()
+data = add_columns(data)
 train_data, test_data, scaler = preprocess_data(data)
 
 train_data = train_data.to_numpy()
@@ -19,7 +20,7 @@ test_data = test_data.to_numpy()
 #! Hyperparameters
 
 epsilon = 0.3
-gamma = 0.2
+gamma = 0.7
 timestpes = len(train_data)
 states = train_data.shape[1]
 test = False

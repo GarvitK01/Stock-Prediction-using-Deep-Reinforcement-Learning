@@ -6,6 +6,7 @@ import tensorflow as tf
 import random
 import datetime
 import time as samay
+import sys
 
 
 class MarketAgent():
@@ -40,7 +41,7 @@ class MarketAgent():
         model.add(keras.layers.Dense(32, activation = 'relu'))
         model.add(keras.layers.Dense(16, activation = 'relu'))
         model.add(keras.layers.Dense(1, activation = 'linear'))
-        model.compile(loss = 'mse', optimizer=tf.keras.optimizers.Adam(learning_rate = 0.001))
+        model.compile(loss = tf.keras.losses.MeanSquaredError(), optimizer=tf.keras.optimizers.Adam(learning_rate = 0.001))
         
         return model
 
@@ -52,15 +53,13 @@ class MarketAgent():
     
         for time in range(1, len(data) - 1):
             state = data[time]   # State Vector
-            reward = 100 * (state[3] - data[time-1][3])/(data[time-1][3] + 0.00001)
-            next_state = time + 1
-            input_state = data[time].reshape(1, 6)
+            reward = 100 * (state[3] - data[time-1][3])/(data[time-1][3] + 0.000000000000001)
+            input_state = data[time].reshape(1, self.state_size)
             prediction = self.model.predict(input_state)
             prediction = prediction[0]
-            # print(f"\n\n{type(prediction)} {type(self.state_value[time])}\n\n")
             self.state_value[time] += alpha * (reward + gamma * prediction - self.state_value[time])
             state = state.reshape(-1, self.state_size)
-            self.model.fit(state, self.state_value[time], epochs = 3, verbose = 1)
+            self.model.fit(state, self.state_value[time], epochs = 1, verbose = 1)
 
         curr_time = samay.time()
         curr_time = datetime.datetime.fromtimestamp(curr_time).strftime('%d_%H:%M:%S')
