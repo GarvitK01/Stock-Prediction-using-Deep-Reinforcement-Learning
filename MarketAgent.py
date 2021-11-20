@@ -1,12 +1,11 @@
 import numpy as np
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt	
 import pandas as pd
 import keras
 import tensorflow as tf
 import random
 import datetime
 import time as samay
-import sys
 
 
 class MarketAgent():
@@ -16,10 +15,11 @@ class MarketAgent():
         self.epsilon = epsilon
         self.gamma = gamma
         self.actions = ['Buy', 'Sell', 'Hold']
-        self.state_value = np.random.random((timesteps, 1))
+        self.state_value = np.zeros((timesteps, 1))   #! Zero
         self.policy = np.array((states, 1))
         self.state_size = states
         self.model = self.make_model()
+        self.model_name = model_name
 
 
     def take_action(self, state):
@@ -52,19 +52,27 @@ class MarketAgent():
         '''
     
         for time in range(1, len(data) - 1):
+
             state = data[time]   # State Vector
             reward = 100 * (state[3] - data[time-1][3])/(data[time-1][3] + 0.000000000000001)
+
             input_state = data[time].reshape(1, self.state_size)
-            prediction = self.model.predict(input_state)
+            prediction = self.model.predict(input_state)   # Target
             prediction = prediction[0]
-            self.state_value[time] += alpha * (reward + gamma * prediction - self.state_value[time])
-            state = state.reshape(-1, self.state_size)
-            self.model.fit(state, self.state_value[time], epochs = 1, verbose = 1)
+
+            self.state_value[time] += alpha * (reward + gamma * prediction - self.state_value[time])  # Vst += alpha * {}
+            
+            #! Training Step
+            self.model.fit(input_state, self.state_value[time+1], epochs = 1, verbose = 0)
 
         curr_time = samay.time()
-        curr_time = datetime.datetime.fromtimestamp(curr_time).strftime('%d_%H:%M:%S')
-        self.model.save(f"model_saved_{curr_time}")
-            
+        curr_time = datetime.datetime.fromtimestamp(curr_time).strftime('%d_%H:%M:%S')  
+        self.model.save(f"model_saved_{self.model_name}")
+
+            # X. theta = y_pred
+            # y_true - y_pred ^ 2 = Loss 
+            # d(loss)/d(theta) = gradient
+            # theta = theat + gradient * theta
 
 
         

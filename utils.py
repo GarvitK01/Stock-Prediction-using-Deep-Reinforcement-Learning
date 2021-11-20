@@ -17,7 +17,7 @@ def add_columns(data):
     values = data["Close"]
     values = np.array(values)
     #Moving Average
-    mov_avg = moving_average(values, 7)
+    mov_avg = moving_average(values, 7)  # Final Moving Average
     mov_avg = list(mov_avg) + (len(values) - len(mov_avg)) * [mov_avg[-1]]
     
     #Price Rate of Change
@@ -25,7 +25,7 @@ def add_columns(data):
     for i in range(1, len(values)):
         proc.append((values[i] - values[i-1])/values[i-1])
         
-    proc = np.array(proc)
+    proc = np.array(proc)   # Final Price rate of Change
     
     data["Moving_Average"] = mov_avg
     data["PROC"] = proc

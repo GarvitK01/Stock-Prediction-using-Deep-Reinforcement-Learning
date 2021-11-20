@@ -32,7 +32,12 @@ if __name__ == "__main__":
     
     print("\n\n ***** Starting Simulation *****\n\n")
 
-    agent.play_episode(epsilon, gamma, alpha, train_data)
-
+    # agent.play_episode(epsilon, gamma, alpha, train_data)
 
     print("\n\n **** End of Episode ****\n\n")
+
+    #! Prediction
+
+    prediction = agent.model.predict(test_data)
+    print(agent.state_value.shape, prediction.shape)
+    
