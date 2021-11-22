@@ -1,3 +1,4 @@
+from os import times
 import numpy as np
 import matplotlib.pyplot as plt	
 import pandas as pd
@@ -15,7 +16,7 @@ class MarketAgent():
         self.epsilon = epsilon
         self.gamma = gamma
         self.actions = ['Buy', 'Sell', 'Hold']
-        self.state_value = np.zeros((timesteps, 1))   #! Zero
+        self.state_value = np.random.uniform(low=-1, high=1, size=(timesteps, 1))
         self.policy = np.array((states, 1))
         self.state_size = states
         self.model = self.make_model()
@@ -37,11 +38,11 @@ class MarketAgent():
         '''
 
         model = keras.models.Sequential()
-        model.add(keras.layers.Dense(16, input_dim = self.state_size, activation = 'relu'))
-        model.add(keras.layers.Dense(32, activation = 'relu'))
-        model.add(keras.layers.Dense(16, activation = 'relu'))
-        model.add(keras.layers.Dense(1, activation = 'linear'))
-        model.compile(loss = tf.keras.losses.MeanSquaredError(), optimizer=tf.keras.optimizers.Adam(learning_rate = 0.001))
+        model.add(keras.layers.Dense(24, input_dim = self.state_size, activation = 'relu'))
+        model.add(keras.layers.Dense(32,  activation = 'relu'))
+        model.add(keras.layers.Dense(16,  activation = 'relu'))
+        model.add(keras.layers.Dense(1, activation = 'tanh'))
+        model.compile(loss = tf.keras.losses.MeanSquaredError(), optimizer=tf.keras.optimizers.Adam(learning_rate = 0.0001))
         
         return model
 
@@ -54,20 +55,18 @@ class MarketAgent():
         for time in range(1, len(data) - 1):
 
             state = data[time]   # State Vector
-            reward = 100 * (state[3] - data[time-1][3])/(data[time-1][3] + 0.000000000000001)
+            reward = 100 * (state[3] - data[time-1][3])
 
             input_state = data[time].reshape(1, self.state_size)
             prediction = self.model.predict(input_state)   # Target
             prediction = prediction[0]
 
-            self.state_value[time] += alpha * (reward + gamma * prediction - self.state_value[time])  # Vst += alpha * {}
+            self.state_value[time] = self.state_value[time] + alpha * (reward + gamma * prediction - self.state_value[time])  # Vst += alpha * {}
             
             #! Training Step
-            self.model.fit(input_state, self.state_value[time+1], epochs = 1, verbose = 0)
+            self.model.fit(input_state, self.state_value[time+1], epochs = 100, verbose = 0)
 
-        curr_time = samay.time()
-        curr_time = datetime.datetime.fromtimestamp(curr_time).strftime('%d_%H:%M:%S')  
-        self.model.save(f"model_saved_{self.model_name}")
+        self.model.save("saved_model")
 
             # X. theta = y_pred
             # y_true - y_pred ^ 2 = Loss 
@@ -78,3 +77,4 @@ class MarketAgent():
         
     
 
+ 

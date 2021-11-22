@@ -20,11 +20,11 @@ test_data = test_data.to_numpy()
 #! Hyperparameters
 
 epsilon = 0.3
-gamma = 0.7
+gamma = 0.8
 timestpes = len(train_data)
 states = train_data.shape[1]
 test = False
-alpha = 0.1
+alpha = 0.9
 
 agent = MarketAgent(epsilon, gamma, timestpes, states, test)
 
@@ -32,12 +32,13 @@ if __name__ == "__main__":
     
     print("\n\n ***** Starting Simulation *****\n\n")
 
-    # agent.play_episode(epsilon, gamma, alpha, train_data)
+    agent.play_episode(epsilon, gamma, alpha, train_data)
 
     print("\n\n **** End of Episode ****\n\n")
 
     #! Prediction
 
     prediction = agent.model.predict(test_data)
-    print(agent.state_value.shape, prediction.shape)
+    for i in range(len(prediction)):
+        print(np.tanh(prediction)[i][0], test_data[i, 3], test_data[i, 7])
     
