@@ -73,7 +73,7 @@ class MarketAgent():
             prediction = self.model.predict(input_state)   # Target
             prediction = prediction[0]
 
-            self.state_value[time] = self.state_value[time+1] + alpha * (reward + gamma * prediction - self.state_value[time])  # Vst += alpha * {}
+            self.state_value[time] = self.state_value[time] + alpha * (reward + gamma * prediction - self.state_value[time])  # Vst += alpha * {}
             
             #! Training Step
             self.model.fit(input_state, self.state_value[time], epochs = 5, verbose = 0)

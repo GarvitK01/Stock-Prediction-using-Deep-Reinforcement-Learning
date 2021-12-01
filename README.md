@@ -4,11 +4,13 @@ Using Deep Learning alongside Reinforcement Learning to estimate stock price tre
 Check [requirements.txt](requirements.txt) file to setup the environment.
 
 We use Temporal Difference (TD) algorithm estimate the state value of one timestep. Using Deep Neural Networks,
-we estimate the statevalues used in TD update step.
+we estimate $V$<sub>$t$+1</sub>($s$) used in TD update step.
+
+$V$<sub>$t$</sub>($s$) = $V$<sub>$t$</sub>($s$) + $\alpha$($r$<sub>$t$</sub> + $\gamma$$V$<sub>$t$+1</sub>($s$) - $V$<sub>$t$</sub>($s$))
 
 To run the code, execute
 ```
 python Game.py -a <alpha> -e <episodes> -g <gamma>
 ```
 
-Link to the paper Implemented [Stock Price Prediction using Reinforcement Learning][https://ieeexplore.ieee.org/document/931880]
+Link to the paper Implemented [Stock Price Prediction using Reinforcement Learning](https://ieeexplore.ieee.org/document/931880)
