@@ -11,4 +11,4 @@ To run the code, execute
 python Game.py -a <alpha> -e <episodes> -g <gamma>
 ```
 
-Link to the paper Implemented [Stock Price Prediction using Reinforcement Learning][https://ieeexplore.ieee.org/document/931880]
+Link to the paper Implemented [Stock Price Prediction using Reinforcement Learning](https://ieeexplore.ieee.org/document/931880)
