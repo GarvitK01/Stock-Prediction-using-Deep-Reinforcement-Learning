@@ -7,7 +7,7 @@ We use Temporal Difference (TD) algorithm estimate the state value of one timest
 we estimate the statev alues used in TD update step.
 
 h<sub>&theta;</sub>(x) = &theta;<sub>o</sub> x + &theta;<sub>1</sub>x
-V<sub>t</sub>(s) = r<sub>t</sub> + \alpha
+V<sub>t</sub>(s) = r<sub>t</sub> + $\alpha$
 To run the code, execute
 ```
 python Game.py -a <alpha> -e <episodes> -g <gamma>
