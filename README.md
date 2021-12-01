@@ -4,7 +4,9 @@ Using Deep Learning alongside Reinforcement Learning to estimate stock price tre
 Check [requirements.txt](requirements.txt) file to setup the environment.
 
 We use Temporal Difference (TD) algorithm estimate the state value of one timestep. Using Deep Neural Networks,
-we estimate the statevalues used in TD update step.
+we estimate the statev alues used in TD update step.
+
+ h<sub>&theta;</sub>(x) = &theta;<sub>o</sub> x + &theta;<sub>1</sub>x
 
 To run the code, execute
 ```
