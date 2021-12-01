@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+import math
+
+def sigmoid(x):
+  return 1 / (1 + math.exp(-x))
 
 def load_data():
 
@@ -13,6 +17,10 @@ def moving_average(x, w):
     return np.convolve(x, np.ones(w), 'valid') / w
 
 def add_columns(data):
+
+    '''
+    Adding Moving Average, and Price Rate of Change in the dataset to add more information to a state
+    '''
     
     values = data["Close"]
     values = np.array(values)
@@ -35,11 +43,15 @@ def add_columns(data):
 
 def preprocess_data(data):
 
+    '''
+    Preprocessing the dataset, to normalize the values between 0 and 1.
+    '''
+
 
     train_data = data[:int(0.8 * len(data))]
     test_data = data[int(0.8 * len(data)):]
     
-    scaler = MinMaxScaler()
+    scaler = MinMaxScaler(feature_range = (0.001, 1))
     
     for column in train_data.columns:
         
@@ -47,13 +59,16 @@ def preprocess_data(data):
         values = np.array(values)
         values = values.reshape(-1, 1)
         train_data[column] = scaler.fit_transform(values)
-        train_data[column] = train_data[column].apply(lambda X: round(X, 4))
+        train_data[column] = train_data[column].apply(lambda X: round(X, 5))
         
         values = test_data[column]
         values = np.array(values)
         values = values.reshape(-1, 1)
         test_data[column] = scaler.fit_transform(values)
-        test_data[column] = test_data[column].apply(lambda X: round(X, 4))   
+        test_data[column] = test_data[column].apply(lambda X: round(X, 5))   
         
+    train_data.to_csv("final_train.csv")
+    test_data.to_csv("final_test.csv")
+
     return train_data, test_data, scaler
 

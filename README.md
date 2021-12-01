@@ -5,5 +5,5 @@ Check [requirements.txt](requirements.txt) file to setup the environment.
 
 To run the code, execute
 ```
-python Game.py
+python Game.py -a <alpha> -e <episodes> -g <gamma>
 ```
