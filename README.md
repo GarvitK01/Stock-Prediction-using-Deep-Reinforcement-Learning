@@ -1,5 +1,5 @@
 # Stock-Prediction-using-Deep-Reinforcement-Learning
-Using Deep Learning alongside Reinforcement Learning to estimate stock price trends
+Using Deep Learning and Reinforcement Learning to estimate stock price trends
 
 Check [requirements.txt](requirements.txt) file to setup the environment.
 
